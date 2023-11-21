@@ -4,15 +4,19 @@ import 'package:mock_machine_test/features/home/controller/home_screen_controlle
 import 'package:mock_machine_test/features/home/view/home_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'features/movie_details/controller/show_detail_controller.dart';
+import 'features/movie_details/controller/movie_detail_controller.dart';
+import 'features/series_details/controller/series_detail_controller.dart';
 
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(
-      create: (context) => TrendingShowsController(),
+      create: (context) => HomeScreenController(),
     ),
     ChangeNotifierProvider(
-      create: (context) => ShowDetailController(),
+      create: (context) => MovieDetailController(),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => SeriesDetailsController(),
     ),
   ], child: const MyApp()));
 }

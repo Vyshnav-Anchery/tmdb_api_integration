@@ -12,7 +12,7 @@ String topRatedMoviesModelToJson(TopRatedMoviesModel data) =>
 
 class TopRatedMoviesModel {
   int? page;
-  List<Result>? results;
+  List<TopMovieResult>? results;
   int? totalPages;
   int? totalResults;
 
@@ -28,8 +28,8 @@ class TopRatedMoviesModel {
         page: json["page"],
         results: json["results"] == null
             ? []
-            : List<Result>.from(
-                json["results"]!.map((x) => Result.fromJson(x))),
+            : List<TopMovieResult>.from(
+                json["results"]!.map((x) => TopMovieResult.fromJson(x))),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
       );
@@ -44,7 +44,7 @@ class TopRatedMoviesModel {
       };
 }
 
-class Result {
+class TopMovieResult {
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
@@ -60,7 +60,7 @@ class Result {
   double? voteAverage;
   int? voteCount;
 
-  Result({
+  TopMovieResult({
     this.adult,
     this.backdropPath,
     this.genreIds,
@@ -77,7 +77,7 @@ class Result {
     this.voteCount,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory TopMovieResult.fromJson(Map<String, dynamic> json) => TopMovieResult(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         genreIds: json["genre_ids"] == null

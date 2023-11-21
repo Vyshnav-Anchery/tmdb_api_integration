@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mock_machine_test/core/api_consts/api_links.dart';
+import 'package:mock_machine_test/features/series_details/view/show_details_screen.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/home_screen_controller.dart';
 
-class TopSeriesListview extends StatelessWidget {
-  const TopSeriesListview({super.key});
+class PopularShowsListview extends StatelessWidget {
+  const PopularShowsListview({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeScreenController>(builder: (context, provider, child) {
       return FutureBuilder(
-          future: provider.requestTopSeries(),
+          future: provider.requestPopularShows(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -36,12 +37,12 @@ class TopSeriesListview extends StatelessWidget {
                       elevation: 3,
                       child: InkWell(
                         onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) => SeriesDetailsScreen(
-                          //           data: snapshot.data!.results![index]),
-                          //     ));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SeriesDetailsScreen(
+                                    id: snapshot.data!.results![index].id!),
+                              ));
                         },
                         child: Stack(
                           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,

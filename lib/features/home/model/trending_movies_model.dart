@@ -1,33 +1,35 @@
 // To parse this JSON data, do
 //
-//     final trendingModel = trendingModelFromJson(jsonString);
+//     final trendingMoviesModel = trendingMoviesModelFromJson(jsonString);
 
 import 'dart:convert';
 
-TrendingModel trendingModelFromJson(String str) =>
-    TrendingModel.fromJson(json.decode(str));
+TrendingMoviesModel trendingMoviesModelFromJson(String str) =>
+    TrendingMoviesModel.fromJson(json.decode(str));
 
-String trendingModelToJson(TrendingModel data) => json.encode(data.toJson());
+String trendingMoviesModelToJson(TrendingMoviesModel data) =>
+    json.encode(data.toJson());
 
-class TrendingModel {
+class TrendingMoviesModel {
   int? page;
-  List<Result>? results;
+  List<TrendingMovieResult>? results;
   int? totalPages;
   int? totalResults;
 
-  TrendingModel({
+  TrendingMoviesModel({
     this.page,
     this.results,
     this.totalPages,
     this.totalResults,
   });
 
-  factory TrendingModel.fromJson(Map<String, dynamic> json) => TrendingModel(
+  factory TrendingMoviesModel.fromJson(Map<String, dynamic> json) =>
+      TrendingMoviesModel(
         page: json["page"],
         results: json["results"] == null
             ? []
-            : List<Result>.from(
-                json["results"]!.map((x) => Result.fromJson(x))),
+            : List<TrendingMovieResult>.from(
+                json["results"]!.map((x) => TrendingMovieResult.fromJson(x))),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
       );
@@ -42,7 +44,7 @@ class TrendingModel {
       };
 }
 
-class Result {
+class TrendingMovieResult {
   bool? adult;
   String? backdropPath;
   int? id;
@@ -58,12 +60,8 @@ class Result {
   bool? video;
   double? voteAverage;
   int? voteCount;
-  String? name;
-  String? originalName;
-  DateTime? firstAirDate;
-  List<String>? originCountry;
 
-  Result({
+  TrendingMovieResult({
     this.adult,
     this.backdropPath,
     this.id,
@@ -79,13 +77,9 @@ class Result {
     this.video,
     this.voteAverage,
     this.voteCount,
-    this.name,
-    this.originalName,
-    this.firstAirDate,
-    this.originCountry,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory TrendingMovieResult.fromJson(Map<String, dynamic> json) => TrendingMovieResult(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         id: json["id"],
@@ -106,14 +100,6 @@ class Result {
         video: json["video"],
         voteAverage: json["vote_average"]?.toDouble(),
         voteCount: json["vote_count"],
-        name: json["name"],
-        originalName: json["original_name"],
-        firstAirDate: json["first_air_date"] == null
-            ? null
-            : DateTime.parse(json["first_air_date"]),
-        originCountry: json["origin_country"] == null
-            ? []
-            : List<String>.from(json["origin_country"]!.map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -134,27 +120,18 @@ class Result {
         "video": video,
         "vote_average": voteAverage,
         "vote_count": voteCount,
-        "name": name,
-        "original_name": originalName,
-        "first_air_date":
-            "${firstAirDate!.year.toString().padLeft(4, '0')}-${firstAirDate!.month.toString().padLeft(2, '0')}-${firstAirDate!.day.toString().padLeft(2, '0')}",
-        "origin_country": originCountry == null
-            ? []
-            : List<dynamic>.from(originCountry!.map((x) => x)),
       };
 }
 
-enum MediaType { MOVIE, TV }
+enum MediaType { MOVIE }
 
-final mediaTypeValues =
-    EnumValues({"movie": MediaType.MOVIE, "tv": MediaType.TV});
+final mediaTypeValues = EnumValues({"movie": MediaType.MOVIE});
 
-enum OriginalLanguage { EN, FR, JA, KO }
+enum OriginalLanguage { EN, FR, KO }
 
 final originalLanguageValues = EnumValues({
   "en": OriginalLanguage.EN,
   "fr": OriginalLanguage.FR,
-  "ja": OriginalLanguage.JA,
   "ko": OriginalLanguage.KO
 });
 

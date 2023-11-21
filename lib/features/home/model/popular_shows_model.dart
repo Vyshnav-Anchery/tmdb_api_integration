@@ -1,35 +1,35 @@
 // To parse this JSON data, do
 //
-//     final topRatedSeriesModel = topRatedSeriesModelFromJson(jsonString);
+//     final popularShowsModel = popularShowsModelFromJson(jsonString);
 
 import 'dart:convert';
 
-TopRatedSeriesModel topRatedSeriesModelFromJson(String str) =>
-    TopRatedSeriesModel.fromJson(json.decode(str));
+PopularShowsModel popularShowsModelFromJson(String str) =>
+    PopularShowsModel.fromJson(json.decode(str));
 
-String topRatedSeriesModelToJson(TopRatedSeriesModel data) =>
+String popularShowsModelToJson(PopularShowsModel data) =>
     json.encode(data.toJson());
 
-class TopRatedSeriesModel {
+class PopularShowsModel {
   int? page;
-  List<TopSeriesResult>? results;
+  List<ShowResult>? results;
   int? totalPages;
   int? totalResults;
 
-  TopRatedSeriesModel({
+  PopularShowsModel({
     this.page,
     this.results,
     this.totalPages,
     this.totalResults,
   });
 
-  factory TopRatedSeriesModel.fromJson(Map<String, dynamic> json) =>
-      TopRatedSeriesModel(
+  factory PopularShowsModel.fromJson(Map<String, dynamic> json) =>
+      PopularShowsModel(
         page: json["page"],
         results: json["results"] == null
             ? []
-            : List<TopSeriesResult>.from(
-                json["results"]!.map((x) => TopSeriesResult.fromJson(x))),
+            : List<ShowResult>.from(
+                json["results"]!.map((x) => ShowResult.fromJson(x))),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
       );
@@ -44,13 +44,13 @@ class TopRatedSeriesModel {
       };
 }
 
-class TopSeriesResult {
+class ShowResult {
   bool? adult;
   String? backdropPath;
   List<int>? genreIds;
   int? id;
   List<String>? originCountry;
-  OriginalLanguage? originalLanguage;
+  String? originalLanguage;
   String? title;
   String? overview;
   double? popularity;
@@ -60,7 +60,7 @@ class TopSeriesResult {
   double? voteAverage;
   int? voteCount;
 
-  TopSeriesResult({
+  ShowResult({
     this.adult,
     this.backdropPath,
     this.genreIds,
@@ -77,8 +77,7 @@ class TopSeriesResult {
     this.voteCount,
   });
 
-  factory TopSeriesResult.fromJson(Map<String, dynamic> json) =>
-      TopSeriesResult(
+  factory ShowResult.fromJson(Map<String, dynamic> json) => ShowResult(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         genreIds: json["genre_ids"] == null
@@ -88,8 +87,7 @@ class TopSeriesResult {
         originCountry: json["origin_country"] == null
             ? []
             : List<String>.from(json["origin_country"]!.map((x) => x)),
-        originalLanguage:
-            originalLanguageValues.map[json["original_language"]]!,
+        originalLanguage: json["original_language"],
         title: json["original_name"],
         overview: json["overview"],
         popularity: json["popularity"]?.toDouble(),
@@ -111,7 +109,7 @@ class TopSeriesResult {
         "origin_country": originCountry == null
             ? []
             : List<dynamic>.from(originCountry!.map((x) => x)),
-        "original_language": originalLanguageValues.reverse[originalLanguage],
+        "original_language": originalLanguage,
         "original_name": title,
         "overview": overview,
         "popularity": popularity,
@@ -122,25 +120,4 @@ class TopSeriesResult {
         "vote_average": voteAverage,
         "vote_count": voteCount,
       };
-}
-
-enum OriginalLanguage { EN, ES, JA, KO }
-
-final originalLanguageValues = EnumValues({
-  "en": OriginalLanguage.EN,
-  "es": OriginalLanguage.ES,
-  "ja": OriginalLanguage.JA,
-  "ko": OriginalLanguage.KO
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

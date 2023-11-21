@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mock_machine_test/core/api_consts/api_links.dart';
-import 'package:mock_machine_test/features/movie_details/view/show_details_screen.dart';
+import 'package:mock_machine_test/features/movie_details/view/movie_details_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +12,7 @@ class TopMoviesListview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TrendingShowsController>(
-        builder: (context, provider, child) {
+    return Consumer<HomeScreenController>(builder: (context, provider, child) {
       return FutureBuilder(
           future: provider.requestTopMovies(),
           builder: (context, snapshot) {
@@ -41,8 +40,8 @@ class TopMoviesListview extends StatelessWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ShowDetailsScreen(
-                                    data: snapshot.data!.results![index]),
+                                builder: (context) => MovieDetailsScreen(
+                                    id: snapshot.data!.results![index].id!),
                               ));
                         },
                         child: Stack(

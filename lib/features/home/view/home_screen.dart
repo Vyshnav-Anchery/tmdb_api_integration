@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mock_machine_test/core/constants/theme_constants.dart';
+import 'package:mock_machine_test/features/home/top%20rated%20movies/topMovies.dart';
+import 'package:mock_machine_test/features/home/view/widgets/popular_shows_listview.dart';
+import 'package:mock_machine_test/features/home/view/widgets/search_delegate.dart';
 import 'package:mock_machine_test/features/home/view/widgets/top_movies_listview.dart';
 
 import 'widgets/carousel_movies.dart';
+import 'widgets/carousel_series.dart';
 import 'widgets/top_series_listview.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -13,33 +17,65 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-                onPressed: () => Scaffold.of(context).openDrawer(),
-                icon: SizedBox(
-                  height: 20,
-                  child: Image.asset(
-                    "assets/logo/equal.png",
-                    width: MediaQuery.sizeOf(context).height / 10,
-                  ),
-                ));
-          },
-        ),
+        // leading: Builder(
+        //   builder: (context) {
+        //     return IconButton(
+        //         onPressed: () => Scaffold.of(context).openDrawer(),
+        //         icon: SizedBox(
+        //           height: 20,
+        //           child: Image.asset(
+        //             "assets/logo/equal.png",
+        //             width: MediaQuery.sizeOf(context).height / 10,
+        //           ),
+        //         ));
+        //   },
+        // ),
         title: Image.asset(
           "assets/logo/netflix_logo.png",
           width: MediaQuery.sizeOf(context).height / 10,
         ),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.search))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                showSearch(context: context, delegate: CustomSearchDelegate());
+              },
+              icon: const Icon(Icons.search))
+        ],
       ),
-      drawer: const Drawer(),
+      // drawer: const Drawer(),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text(
+                "Trending Movies",
+                style: ThemeConstants.homeSubCategories,
+              ),
+              const SizedBox(height: 20),
               const MovieCarousel(),
+              const SizedBox(height: 50),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Trending Series",
+                    style: ThemeConstants.homeSubCategories,
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TopMoviesScreen(),
+                            ));
+                      },
+                      child: Text("View all"))
+                ],
+              ),
+              const SizedBox(height: 20),
+              const SeriesCarousel(),
               const SizedBox(height: 50),
               Text(
                 "Top Rated Movies",
@@ -54,6 +90,13 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const TopSeriesListview(),
+              const SizedBox(height: 50),
+              Text(
+                "Popular Shows",
+                style: ThemeConstants.homeSubCategories,
+              ),
+              const SizedBox(height: 20),
+              const PopularShowsListview(),
               const SizedBox(height: 50),
             ],
           ),
