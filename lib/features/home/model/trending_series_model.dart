@@ -4,92 +4,105 @@
 
 import 'dart:convert';
 
-TrendingSeriesModel trendingSeriesModelFromJson(String str) => TrendingSeriesModel.fromJson(json.decode(str));
+TrendingSeriesModel trendingSeriesModelFromJson(String str) =>
+    TrendingSeriesModel.fromJson(json.decode(str));
 
-String trendingSeriesModelToJson(TrendingSeriesModel data) => json.encode(data.toJson());
+String trendingSeriesModelToJson(TrendingSeriesModel data) =>
+    json.encode(data.toJson());
 
 class TrendingSeriesModel {
-    int? page;
-    List<TrendingSeriesResult>? results;
-    int? totalPages;
-    int? totalResults;
+  int? page;
+  List<Result>? results;
+  int? totalPages;
+  int? totalResults;
 
-    TrendingSeriesModel({
-        this.page,
-        this.results,
-        this.totalPages,
-        this.totalResults,
-    });
+  TrendingSeriesModel({
+    this.page,
+    this.results,
+    this.totalPages,
+    this.totalResults,
+  });
 
-    factory TrendingSeriesModel.fromJson(Map<String, dynamic> json) => TrendingSeriesModel(
+  factory TrendingSeriesModel.fromJson(Map<String, dynamic> json) =>
+      TrendingSeriesModel(
         page: json["page"],
-        results: json["results"] == null ? [] : List<TrendingSeriesResult>.from(json["results"]!.map((x) => TrendingSeriesResult.fromJson(x))),
+        results: json["results"] == null
+            ? []
+            : List<Result>.from(
+                json["results"]!.map((x) => Result.fromJson(x))),
         totalPages: json["total_pages"],
         totalResults: json["total_results"],
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "page": page,
-        "results": results == null ? [] : List<dynamic>.from(results!.map((x) => x.toJson())),
+        "results": results == null
+            ? []
+            : List<dynamic>.from(results!.map((x) => x.toJson())),
         "total_pages": totalPages,
         "total_results": totalResults,
-    };
+      };
 }
 
-class TrendingSeriesResult {
-    bool? adult;
-    String? backdropPath;
-    int? id;
-    String? name;
-    OriginalLanguage? originalLanguage;
-    String? originalName;
-    String? overview;
-    String? posterPath;
-    MediaType? mediaType;
-    List<int>? genreIds;
-    double? popularity;
-    DateTime? firstAirDate;
-    double? voteAverage;
-    int? voteCount;
-    List<String>? originCountry;
+class Result {
+  bool? adult;
+  String? backdropPath;
+  int? id;
+  String? name;
+  OriginalLanguage? originalLanguage;
+  String? originalName;
+  String? overview;
+  String? posterPath;
+  MediaType? mediaType;
+  List<int>? genreIds;
+  double? popularity;
+  String? firstAirDate;
+  double? voteAverage;
+  int? voteCount;
+  List<String>? originCountry;
 
-    TrendingSeriesResult({
-        this.adult,
-        this.backdropPath,
-        this.id,
-        this.name,
-        this.originalLanguage,
-        this.originalName,
-        this.overview,
-        this.posterPath,
-        this.mediaType,
-        this.genreIds,
-        this.popularity,
-        this.firstAirDate,
-        this.voteAverage,
-        this.voteCount,
-        this.originCountry,
-    });
+  Result({
+    this.adult,
+    this.backdropPath,
+    this.id,
+    this.name,
+    this.originalLanguage,
+    this.originalName,
+    this.overview,
+    this.posterPath,
+    this.mediaType,
+    this.genreIds,
+    this.popularity,
+    this.firstAirDate,
+    this.voteAverage,
+    this.voteCount,
+    this.originCountry,
+  });
 
-    factory TrendingSeriesResult.fromJson(Map<String, dynamic> json) => TrendingSeriesResult(
+  factory Result.fromJson(Map<String, dynamic> json) => Result(
         adult: json["adult"],
         backdropPath: json["backdrop_path"],
         id: json["id"],
         name: json["name"],
-        originalLanguage: originalLanguageValues.map[json["original_language"]]!,
+        originalLanguage:
+            originalLanguageValues.map[json["original_language"]]!,
         originalName: json["original_name"],
         overview: json["overview"],
         posterPath: json["poster_path"],
         mediaType: mediaTypeValues.map[json["media_type"]]!,
-        genreIds: json["genre_ids"] == null ? [] : List<int>.from(json["genre_ids"]!.map((x) => x)),
+        genreIds: json["genre_ids"] == null
+            ? []
+            : List<int>.from(json["genre_ids"]!.map((x) => x)),
         popularity: json["popularity"]?.toDouble(),
-        firstAirDate: json["first_air_date"] == null ? null : DateTime.parse(json["first_air_date"]),
+        firstAirDate: json["first_air_date"],
         voteAverage: json["vote_average"]?.toDouble(),
         voteCount: json["vote_count"],
-        originCountry: json["origin_country"] == null ? [] : List<String>.from(json["origin_country"]!.map((x) => x)),
-    );
+        originCountry: json["origin_country"] == null
+            ? []
+            : List<String>.from(json["origin_country"]!.map((x) => x)),
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "adult": adult,
         "backdrop_path": backdropPath,
         "id": id,
@@ -99,45 +112,39 @@ class TrendingSeriesResult {
         "overview": overview,
         "poster_path": posterPath,
         "media_type": mediaTypeValues.reverse[mediaType],
-        "genre_ids": genreIds == null ? [] : List<dynamic>.from(genreIds!.map((x) => x)),
+        "genre_ids":
+            genreIds == null ? [] : List<dynamic>.from(genreIds!.map((x) => x)),
         "popularity": popularity,
-        "first_air_date": "${firstAirDate!.year.toString().padLeft(4, '0')}-${firstAirDate!.month.toString().padLeft(2, '0')}-${firstAirDate!.day.toString().padLeft(2, '0')}",
+        "first_air_date": firstAirDate,
         "vote_average": voteAverage,
         "vote_count": voteCount,
-        "origin_country": originCountry == null ? [] : List<dynamic>.from(originCountry!.map((x) => x)),
-    };
+        "origin_country": originCountry == null
+            ? []
+            : List<dynamic>.from(originCountry!.map((x) => x)),
+      };
 }
 
-enum MediaType {
-    TV
-}
+enum MediaType { TV }
 
-final mediaTypeValues = EnumValues({
-    "tv": MediaType.TV
-});
+final mediaTypeValues = EnumValues({"tv": MediaType.TV});
 
-enum OriginalLanguage {
-    EN,
-    HI,
-    JA,
-    PT
-}
+enum OriginalLanguage { EN, JA, KO, ZH }
 
 final originalLanguageValues = EnumValues({
-    "en": OriginalLanguage.EN,
-    "hi": OriginalLanguage.HI,
-    "ja": OriginalLanguage.JA,
-    "pt": OriginalLanguage.PT
+  "en": OriginalLanguage.EN,
+  "ja": OriginalLanguage.JA,
+  "ko": OriginalLanguage.KO,
+  "zh": OriginalLanguage.ZH
 });
 
 class EnumValues<T> {
-    Map<String, T> map;
-    late Map<T, String> reverseMap;
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
 
-    EnumValues(this.map);
+  EnumValues(this.map);
 
-    Map<T, String> get reverse {
-        reverseMap = map.map((k, v) => MapEntry(v, k));
-        return reverseMap;
-    }
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

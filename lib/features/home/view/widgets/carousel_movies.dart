@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:mock_machine_test/core/api_consts/api_links.dart';
@@ -29,7 +30,6 @@ class MovieCarousel extends StatelessWidget {
                   options: CarouselOptions(
                       autoPlayCurve: Curves.fastOutSlowIn,
                       autoPlayAnimationDuration: const Duration(seconds: 2),
-                      height: MediaQuery.sizeOf(context).height / 3.5,
                       autoPlay: true,
                       aspectRatio: 16 / 9,
                       enlargeCenterPage: true),
@@ -46,24 +46,23 @@ class MovieCarousel extends StatelessWidget {
                                     id: snapshot.data!.results![index].id!),
                               ));
                         },
-                        child: Container(
-                          width: MediaQuery.sizeOf(context).height / 2,
-                          height: MediaQuery.sizeOf(context).height,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "$imageLink${snapshot.data!.results![index].posterPath}"),
-                                  fit: BoxFit.fill)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: CachedNetworkImage(
+                            imageUrl:
+                                "$imageLinkOriginal${snapshot.data!.results![index].backdropPath}",
+                            fit: BoxFit.fill,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) => Center(
+                              child: CircularProgressIndicator(
+                                  value: downloadProgress.progress),
+                            ),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
                         ),
                       ),
                     );
-                    // return SizedBox(
-                    //   child: Image.network(
-                    //       width: MediaQuery.sizeOf(context).width,
-                    //       fit: BoxFit.fill,
-                    //       "$imageLink${snapshot.data!.results![index].posterPath}"),
-                    // );
                   },
                 );
               }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
@@ -8,18 +7,19 @@ import 'package:mock_machine_test/features/home/model/top_movies_model.dart';
 import 'package:mock_machine_test/features/home/model/top_series_model.dart';
 import 'package:mock_machine_test/features/home/model/trending_movies_model.dart';
 import 'package:mock_machine_test/features/home/model/trending_series_model.dart';
-
 import '../model/search_model.dart';
 
 class HomeScreenController extends ChangeNotifier {
   final Dio dio = Dio();
-  List<SearchModel?> searchResults = [];
+  List searchResults = [];
   ScrollController trendingScrollController = ScrollController();
   final String baseUrl = 'https://api.themoviedb.org/3';
   Map<String, dynamic> headers = {
     "accept": 'application/json',
     "Authorization": 'Bearer $apiTocken'
   };
+  ScrollController? pageNumberScrollController;
+  int pageNo = 1;
 
   Future<TrendingSeriesModel?> requestTrendingSeries() async {
     try {
@@ -56,7 +56,7 @@ class HomeScreenController extends ChangeNotifier {
       Response response;
       response = await dio.get(topMovies,
           options: Options(headers: headers),
-          queryParameters: {"language": "en-US"});
+          queryParameters: {"language": "en-US", "page": pageNo});
       TopRatedMoviesModel trending =
           TopRatedMoviesModel.fromJson(response.data);
       return trending;
@@ -64,6 +64,32 @@ class HomeScreenController extends ChangeNotifier {
       log(e.toString());
       return null;
     }
+  }
+
+  changePage(int newNo) {
+    pageNo = newNo;
+    notifyListeners();
+  }
+
+  nextPage(total) {
+    if (pageNo < total) {
+      pageNo++;
+      notifyListeners();
+    }
+  }
+
+  prevPage() {
+    if (pageNo > 1) {
+      pageNo--;
+      notifyListeners();
+    }
+  }
+
+  ScrollController? scrollToCurrentPage(int currPage, double cardWidth) {
+    double initialOffset = (currPage - 1) * cardWidth;
+    pageNumberScrollController =
+        ScrollController(initialScrollOffset: initialOffset);
+    return pageNumberScrollController;
   }
 
   Future<TopRatedSeriesModel?> requestTopSeries() async {
@@ -97,27 +123,21 @@ class HomeScreenController extends ChangeNotifier {
     }
   }
 
-  Future<List<SearchModel?>> getSearchResult(searchQuery) async {
-    print("he");
+  Future<SearchModel?> getSearchResult(searchQuery) async {
     searchResults.clear();
     if (searchQuery.toString().isEmpty) {
-      print("object");
-      return [];
+      log("message");
+      return null;
     }
     try {
-      print("object1");
-      final url = '$baseUrl/search/multi?$apiKey&query=$searchQuery';
+      final url = '$baseUrl/search/multi?&query=$searchQuery';
       Response response =
           await dio.get(url, options: Options(headers: headers));
-      print(response.data);
-      var data = jsonDecode(response.data);
-      // var shows = response.data['results'];
-      for (var i in data) {
-        searchResults.add(SearchModel.fromJson(i));
-      }
-      return searchResults;
+      SearchModel result = SearchModel.fromJson(response.data);
+
+      return result;
     } catch (error) {
-      return [];
+      return null;
     }
   }
 }

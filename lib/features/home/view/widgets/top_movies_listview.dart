@@ -1,8 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:mock_machine_test/core/api_consts/api_links.dart';
 import 'package:mock_machine_test/features/movie_details/view/movie_details_screen.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/home_screen_controller.dart';
@@ -31,8 +30,6 @@ class TopMoviesListview extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: 10,
                   itemBuilder: (context, index) {
-                    String rating =
-                        snapshot.data!.results![index].voteAverage.toString();
                     return Card(
                       elevation: 3,
                       child: InkWell(
@@ -44,67 +41,23 @@ class TopMoviesListview extends StatelessWidget {
                                     id: snapshot.data!.results![index].id!),
                               ));
                         },
-                        child: Stack(
-                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            // Container(
-                            //   height: MediaQuery.sizeOf(context).height / 4,
-                            //   decoration: BoxDecoration(
-                            //       borderRadius: const BorderRadius.only(
-                            //           topLeft: Radius.circular(10),
-                            //           topRight: Radius.circular(10)),
-                            //       image: DecorationImage(
-                            //           image: NetworkImage(
-                            //               "$imageLink${snapshot.data!.results![index].posterPath!}"),
-                            //           fit: BoxFit.cover)),
-                            //   // height: MediaQuery.sizeOf(context).height / 2,
-                            //   width: MediaQuery.sizeOf(context).height / 5.5,
-                            // ),
-                            ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                topRight: Radius.circular(10.0),
-                              ),
-                              child: Image.network(
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            topRight: Radius.circular(10.0),
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl:
                                 "$imageLink${snapshot.data!.results![index].posterPath!}",
-                                height: 250,
-                              ),
+                            fit: BoxFit.fill,
+                            progressIndicatorBuilder:
+                                (context, url, downloadProgress) => Center(
+                              child: CircularProgressIndicator(
+                                  value: downloadProgress.progress),
                             ),
-                            const SizedBox(height: 20),
-                            Positioned(
-                              left: 20,
-                              bottom: 60,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black,
-                                child: CircularPercentIndicator(
-                                  radius: 20.0,
-                                  lineWidth: 5.0,
-                                  percent: snapshot
-                                          .data!.results![index].voteAverage! /
-                                      10,
-                                  center: Text(
-                                      rating.substring(0, rating.length - 2),
-                                      style:
-                                          const TextStyle(color: Colors.white)),
-                                  progressColor: Colors.green,
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 10,
-                              bottom: 15,
-                              child: SizedBox(
-                                width: MediaQuery.sizeOf(context).width / 3,
-                                height: 40,
-                                child: Text(
-                                  snapshot.data!.results![index].title!,
-                                  softWrap: true,
-                                  maxLines: 2,
-                                  style: GoogleFonts.poppins(),
-                                ),
-                              ),
-                            ),
-                          ],
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                          ),
                         ),
                       ),
                     );

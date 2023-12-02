@@ -5,6 +5,7 @@ class ThemeConstants {
   static ThemeData appTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
     useMaterial3: true,
+    // textTheme: TextTheme(displayMedium: GoogleFonts.poppins()),
   );
   static TextStyle homeSubCategories =
       GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold);

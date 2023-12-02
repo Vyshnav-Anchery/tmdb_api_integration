@@ -85,7 +85,7 @@ class TrendingMovieResult {
         id: json["id"],
         title: json["title"],
         originalLanguage:
-            originalLanguageValues.map[json["original_language"]]!,
+            originalLanguageValues.map[json["original_language"]],
         originalTitle: json["original_title"],
         overview: json["overview"],
         posterPath: json["poster_path"],
