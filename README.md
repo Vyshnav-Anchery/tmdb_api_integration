@@ -3,6 +3,7 @@
 A new Flutter movie app which allows users to see trending movies and series of  current day and also provides top rated movies and seris details.The app allows users to search shows and find details about it.
 
 Packages used: 
+
     Dio : Api integration
     Cached_network_image : To get network images
     Provider : State management
