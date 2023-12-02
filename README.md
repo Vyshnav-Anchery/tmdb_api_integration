@@ -1,6 +1,16 @@
 # mock_machine_test
 
-A new Flutter project.
+A new Flutter movie app which allows users to see trending movies and series of  current day and also provides top rated movies and seris details.The app allows users to search shows and find details about it.
+
+Packages used: 
+    Dio : Api integration
+    Cached_network_image : To get network images
+    Provider : State management
+    google_fonts : to change text font
+    flutter_rating_bar : for showing show rating
+    carousel_slider : for animated carousel
+
+screenshots are in assets\screenshots
 
 ## Getting Started
 
