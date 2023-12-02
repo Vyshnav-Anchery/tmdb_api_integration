@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:mock_machine_test/core/api_consts/api_links.dart';
-import 'package:mock_machine_test/features/series_details/view/show_details_screen.dart';
+import 'package:mock_machine_test/screens/series_details/view/show_details_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/home_screen_controller.dart';

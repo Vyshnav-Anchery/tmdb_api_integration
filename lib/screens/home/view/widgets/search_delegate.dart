@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:mock_machine_test/features/home/controller/home_screen_controller.dart';
+import 'package:mock_machine_test/core/common%20widgets/movie_detail_card.dart';
+import 'package:mock_machine_test/screens/home/controller/home_screen_controller.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/common widgets/series_detail_card.dart';
 import '../../model/search_model.dart';
 
 class CustomSearchDelegate extends SearchDelegate<SearchModel> {
@@ -56,16 +58,11 @@ class CustomSearchDelegate extends SearchDelegate<SearchModel> {
           return ListView.builder(
             itemCount: suggestionList.length,
             itemBuilder: (context, index) {
-              String title = suggestionList[index].mediaType == MediaType.MOVIE
-                  ? suggestionList[index].title!
-                  : suggestionList[index].name!;
-              return ListTile(
-                title: Text(title),
-                subtitle: Text(suggestionList[index].mediaType.toString()),
-                onTap: () {
-                  // Navigator.pop(context);
-                },
-              );
+              return suggestionList[index].mediaType == MediaType.MOVIE
+                  ? MovieDetailCard(topMovie: suggestionList[index])
+                  : SeriesDetailCard(
+                      topSeries: suggestionList[index],
+                    );
             },
           );
         }

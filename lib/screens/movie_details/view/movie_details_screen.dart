@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mock_machine_test/core/api_consts/api_links.dart';
-import 'package:mock_machine_test/features/movie_details/controller/movie_detail_controller.dart';
+import 'package:mock_machine_test/screens/movie_details/controller/movie_detail_controller.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/common widgets/movie_clipper.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mock_machine_test/core/common%20widgets/movie_detail_card.dart';
-import 'package:mock_machine_test/features/home/controller/home_screen_controller.dart';
+import 'package:mock_machine_test/screens/home/controller/home_screen_controller.dart';
 import 'package:provider/provider.dart';
 
 class TopMoviesScreen extends StatelessWidget {
@@ -49,7 +49,7 @@ class TopMoviesScreen extends StatelessWidget {
                         IconButton(
                             // color: Colors.white,
                             onPressed: () {
-                              provider.prevPage();
+                              provider.prevMoviePage();
                             },
                             icon: const Icon(Icons.skip_previous)),
                         SizedBox(
@@ -67,7 +67,7 @@ class TopMoviesScreen extends StatelessWidget {
                                 width: 50,
                                 child: InkWell(
                                   onTap: () {
-                                    provider.changePage(pageNumber);
+                                    provider.changeMoviePage(pageNumber);
                                   },
                                   child: Card(
                                     color: snapshot.data!.page == pageNumber
@@ -84,7 +84,7 @@ class TopMoviesScreen extends StatelessWidget {
                         IconButton(
                             // color: Colors.white,
                             onPressed: () {
-                              provider.nextPage(snapshot.data!.totalPages);
+                              provider.nextMoviePage(snapshot.data!.totalPages);
                             },
                             icon: const Icon(Icons.skip_next)),
                       ],

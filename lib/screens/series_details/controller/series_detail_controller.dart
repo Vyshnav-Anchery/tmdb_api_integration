@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mock_machine_test/core/api_consts/api_links.dart';
-import 'package:mock_machine_test/features/series_details/model/series_details_model.dart';
+import 'package:mock_machine_test/screens/series_details/model/series_details_model.dart';
 
 class SeriesDetailsController extends ChangeNotifier {
   final Dio dio = Dio();
@@ -21,7 +21,6 @@ class SeriesDetailsController extends ChangeNotifier {
         options: Options(headers: headers),
       );
       SeriesDetailsModel details = SeriesDetailsModel.fromJson(response.data);
-      print(details.adult);
       return details;
     } catch (e) {
       log(e.toString());

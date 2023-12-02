@@ -1,18 +1,29 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mock_machine_test/screens/series_details/view/show_details_screen.dart';
 
-import '../../screens/movie_details/view/movie_details_screen.dart';
+import '../../screens/home/model/top_series_model.dart';
 import '../api_consts/api_links.dart';
 
-class MovieDetailCard extends StatelessWidget {
-  final topMovie;
-  const MovieDetailCard({super.key, required this.topMovie});
+class SeriesDetailCard extends StatelessWidget {
+  final topSeries;
+  const SeriesDetailCard({super.key, required this.topSeries});
 
   @override
   Widget build(BuildContext context) {
-    String rating = topMovie.voteAverage.toString();
-    DateTime releaseDate = topMovie.releaseDate!;
+    String rating = topSeries.voteAverage.toString();
+    DateTime releaseDate = topSeries.firstAirDate ?? topSeries.firstAirDate;
+    late String originalLang;
+    if (topSeries.originalLanguage == "en") {
+      originalLang = "English";
+    } else if (topSeries.originalLanguage == "es") {
+      originalLang = "Spanish";
+    } else if (topSeries.originalLanguage == "ja") {
+      originalLang = "Japanese";
+    } else {
+      originalLang = "Korean";
+    }
     return Card(
       elevation: 3,
       child: InkWell(
@@ -20,7 +31,7 @@ class MovieDetailCard extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => MovieDetailsScreen(id: topMovie.id!),
+                builder: (context) => SeriesDetailsScreen(id: topSeries.id!),
               ));
         },
         child: Row(
@@ -31,7 +42,7 @@ class MovieDetailCard extends StatelessWidget {
                 bottomLeft: Radius.circular(10.0),
               ),
               child: CachedNetworkImage(
-                imageUrl: "$imageLinkOriginal${topMovie.posterPath!}",
+                imageUrl: "$imageLinkOriginal${topSeries.posterPath!}",
                 height: 250,
               ),
             ),
@@ -45,7 +56,7 @@ class MovieDetailCard extends StatelessWidget {
                   width: MediaQuery.sizeOf(context).width / 3,
                   height: 40,
                   child: Text(
-                    topMovie.title!,
+                    topSeries.name!,
                     softWrap: true,
                     maxLines: 2,
                     style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
@@ -56,7 +67,7 @@ class MovieDetailCard extends StatelessWidget {
                   children: [
                     const Text("Language : "),
                     // const SizedBox(width: 20),
-                    Text(topMovie.originalLanguage!)
+                    Text(originalLang)
                   ],
                 ),
                 const SizedBox(height: 10),

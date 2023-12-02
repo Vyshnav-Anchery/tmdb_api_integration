@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mock_machine_test/features/movie_details/model/movie_detail_model.dart';
+import 'package:mock_machine_test/screens/movie_details/model/movie_detail_model.dart';
 
 import '../../../core/api_consts/api_links.dart';
 

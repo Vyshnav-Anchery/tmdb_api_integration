@@ -1,12 +1,14 @@
 import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mock_machine_test/core/api_consts/api_links.dart';
-import 'package:mock_machine_test/features/home/model/popular_shows_model.dart';
-import 'package:mock_machine_test/features/home/model/top_movies_model.dart';
-import 'package:mock_machine_test/features/home/model/top_series_model.dart';
-import 'package:mock_machine_test/features/home/model/trending_movies_model.dart';
-import 'package:mock_machine_test/features/home/model/trending_series_model.dart';
+import 'package:mock_machine_test/screens/home/model/popular_shows_model.dart';
+import 'package:mock_machine_test/screens/home/model/top_movies_model.dart';
+import 'package:mock_machine_test/screens/home/model/top_series_model.dart';
+import 'package:mock_machine_test/screens/home/model/trending_movies_model.dart';
+import 'package:mock_machine_test/screens/home/model/trending_series_model.dart';
+
 import '../model/search_model.dart';
 
 class HomeScreenController extends ChangeNotifier {
@@ -19,7 +21,8 @@ class HomeScreenController extends ChangeNotifier {
     "Authorization": 'Bearer $apiTocken'
   };
   ScrollController? pageNumberScrollController;
-  int pageNo = 1;
+  int moviePageNo = 1;
+  int seriesPageNo = 1;
 
   Future<TrendingSeriesModel?> requestTrendingSeries() async {
     try {
@@ -56,7 +59,7 @@ class HomeScreenController extends ChangeNotifier {
       Response response;
       response = await dio.get(topMovies,
           options: Options(headers: headers),
-          queryParameters: {"language": "en-US", "page": pageNo});
+          queryParameters: {"language": "en-US", "page": moviePageNo});
       TopRatedMoviesModel trending =
           TopRatedMoviesModel.fromJson(response.data);
       return trending;
@@ -66,21 +69,56 @@ class HomeScreenController extends ChangeNotifier {
     }
   }
 
-  changePage(int newNo) {
-    pageNo = newNo;
+  Future<TopRatedSeriesModel?> requestTopSeries() async {
+    try {
+      Response response;
+      response = await dio.get(topSeries,
+          options: Options(headers: headers),
+          queryParameters: {"language": "en-US", "page": seriesPageNo});
+      log(response.statusCode.toString());
+      TopRatedSeriesModel trending =
+          TopRatedSeriesModel.fromJson(response.data);
+      return trending;
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
+  changeMoviePage(int newNo) {
+    moviePageNo = newNo;
     notifyListeners();
   }
 
-  nextPage(total) {
-    if (pageNo < total) {
-      pageNo++;
+  nextMoviePage(total) {
+    if (moviePageNo < total) {
+      moviePageNo++;
       notifyListeners();
     }
   }
 
-  prevPage() {
-    if (pageNo > 1) {
-      pageNo--;
+  prevMoviePage() {
+    if (moviePageNo > 1) {
+      moviePageNo--;
+      notifyListeners();
+    }
+  }
+
+  changeSeriesPage(int newNo) {
+    seriesPageNo = newNo;
+    notifyListeners();
+  }
+
+  nextSeriesPage(total) {
+    if (seriesPageNo < total) {
+      seriesPageNo++;
+      notifyListeners();
+    }
+  }
+
+  prevSeriesPage() {
+    if (seriesPageNo > 1) {
+      seriesPageNo--;
       notifyListeners();
     }
   }
@@ -90,22 +128,6 @@ class HomeScreenController extends ChangeNotifier {
     pageNumberScrollController =
         ScrollController(initialScrollOffset: initialOffset);
     return pageNumberScrollController;
-  }
-
-  Future<TopRatedSeriesModel?> requestTopSeries() async {
-    try {
-      Response response;
-      response = await dio.get(
-        topSeries,
-        options: Options(headers: headers),
-      );
-      TopRatedSeriesModel trending =
-          TopRatedSeriesModel.fromJson(response.data);
-      return trending;
-    } catch (e) {
-      log(e.toString());
-      return null;
-    }
   }
 
   Future<PopularShowsModel?> requestPopularShows() async {
